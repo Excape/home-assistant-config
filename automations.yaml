@@ -1,0 +1,287 @@
+- id: letsencrypt-renewal
+  alias: Let's Encrypt Renewal
+  trigger:
+  - platform: time
+    at: 00:00:00
+  action:
+  - service: hassio.addon_restart
+    data:
+      addon: core_letsencrypt
+- id: '1591523083883'
+  alias: Dimmer switch bedroom lamp on
+  description: ''
+  trigger:
+  - device_id: 97542a706e784322a2909144ea93b941
+    domain: deconz
+    platform: device
+    subtype: turn_on
+    type: remote_button_short_press
+  condition:
+  - condition: device
+    device_id: 7b8ddd42b0fa4127a848af09ea0d80da
+    domain: light
+    entity_id: light.bedroom_lamp
+    type: is_off
+  action:
+  - device_id: 7b8ddd42b0fa4127a848af09ea0d80da
+    domain: light
+    entity_id: light.bedroom_lamp
+    type: turn_on
+- id: '1591523276235'
+  alias: Dimmer switch bedroom lamp off
+  description: ''
+  trigger:
+  - device_id: 97542a706e784322a2909144ea93b941
+    domain: deconz
+    platform: device
+    subtype: turn_off
+    type: remote_button_short_press
+  condition:
+  - condition: device
+    device_id: 7b8ddd42b0fa4127a848af09ea0d80da
+    domain: light
+    entity_id: light.bedroom_lamp
+    type: is_on
+  action:
+  - device_id: 7b8ddd42b0fa4127a848af09ea0d80da
+    domain: light
+    entity_id: light.bedroom_lamp
+    type: turn_off
+- id: '1591523529986'
+  alias: dimmer switch bedroom lamp cycle temp
+  description: ''
+  trigger:
+  - device_id: 97542a706e784322a2909144ea93b941
+    domain: deconz
+    platform: device
+    subtype: turn_on
+    type: remote_button_short_press
+  condition:
+  - condition: device
+    device_id: 7b8ddd42b0fa4127a848af09ea0d80da
+    domain: light
+    entity_id: light.bedroom_lamp
+    type: is_on
+  action:
+  - data_template:
+      color_temp: '{{ (state_attr(''light.bedroom_lamp'', ''color_temp'')|int + 100)
+        % state_attr(''light.bedroom_lamp'', ''max_mireds'')|int}}'
+    entity_id: light.bedroom_lamp
+    service: light.turn_on
+- id: '1591524178905'
+  alias: dimmer switch bedroom lamp dim up
+  description: ''
+  trigger:
+  - device_id: 97542a706e784322a2909144ea93b941
+    domain: deconz
+    platform: device
+    subtype: dim_up
+    type: remote_button_short_press
+  condition: []
+  action:
+  - device_id: 7b8ddd42b0fa4127a848af09ea0d80da
+    domain: light
+    entity_id: light.bedroom_lamp
+    type: brightness_increase
+- id: '1591524239107'
+  alias: dimmer switch bedroom lamp dim down
+  description: ''
+  trigger:
+  - device_id: 97542a706e784322a2909144ea93b941
+    domain: deconz
+    platform: device
+    subtype: dim_down
+    type: remote_button_short_press
+  condition:
+  - condition: device
+    device_id: 7b8ddd42b0fa4127a848af09ea0d80da
+    domain: light
+    entity_id: light.bedroom_lamp
+    type: is_on
+  action:
+  - device_id: 7b8ddd42b0fa4127a848af09ea0d80da
+    domain: light
+    entity_id: light.bedroom_lamp
+    type: brightness_decrease
+- id: '1593274614724'
+  alias: notify_inside_temp
+  description: Notify if inside warmer than outside
+  trigger:
+    platform: time_pattern
+    minutes: /5
+  condition:
+  - condition: template
+    value_template: '{{ (states.sensor.balcony_temp.state) > (states.sensor.kitchen_temp.state)
+      }}"'
+  - condition: template
+    value_template: '{{(as_timestamp(now()) - (as_timestamp(states.automation.notify_inside_temp.last_triggered))>10800)}}'
+  action:
+  - data:
+      message: 'Inside: {{ states.sensor.kitchen_temp.state }}C, Outside: {{ states.sensor.balcony_temp.state
+        }}'
+      title: Close the windows!
+    service: notify.google_cloud
+- id: '1594409478303'
+  alias: dimmer switch dining room lamp turn off
+  description: ''
+  trigger:
+  - device_id: cddf4b1dd6714440bfdb660da617a62c
+    domain: deconz
+    platform: device
+    subtype: turn_off
+    type: remote_button_short_press
+  condition:
+  - condition: device
+    device_id: 7277175aca4449f596f05f7e3ce38627
+    domain: light
+    entity_id: light.living_room_lamp
+    type: is_on
+  action:
+  - device_id: 7277175aca4449f596f05f7e3ce38627
+    domain: light
+    entity_id: light.living_room_lamp
+    type: turn_off
+- id: '1594409708110'
+  alias: dimmer switch dining room lamp on
+  description: ''
+  trigger:
+  - device_id: cddf4b1dd6714440bfdb660da617a62c
+    domain: deconz
+    platform: device
+    subtype: turn_on
+    type: remote_button_short_press
+  condition: []
+  action:
+  - device_id: 7277175aca4449f596f05f7e3ce38627
+    domain: light
+    entity_id: light.living_room_lamp
+    type: turn_on
+- id: '1594410235108'
+  alias: dimmer switch dining room lamp dim down
+  description: ''
+  trigger:
+  - device_id: cddf4b1dd6714440bfdb660da617a62c
+    domain: deconz
+    platform: device
+    subtype: dim_down
+    type: remote_button_short_press
+  condition:
+  - condition: device
+    device_id: 7277175aca4449f596f05f7e3ce38627
+    domain: light
+    entity_id: light.living_room_lamp
+    type: is_on
+  action:
+  - device_id: 7277175aca4449f596f05f7e3ce38627
+    domain: light
+    entity_id: light.living_room_lamp
+    type: brightness_decrease
+- id: '1594410360669'
+  alias: dimmer switch dining room lamp dim up
+  description: ''
+  trigger:
+  - device_id: cddf4b1dd6714440bfdb660da617a62c
+    domain: deconz
+    platform: device
+    subtype: dim_up
+    type: remote_button_short_press
+  condition:
+  - condition: device
+    device_id: 7277175aca4449f596f05f7e3ce38627
+    domain: light
+    entity_id: light.living_room_lamp
+    type: is_on
+  action:
+  - device_id: 7277175aca4449f596f05f7e3ce38627
+    domain: light
+    entity_id: light.living_room_lamp
+    type: brightness_increase
+- id: '1607949826125'
+  alias: Automated Daily Snapshot
+  description: ''
+  use_blueprint:
+    path: vorion/create-automated-backups-every-day.yaml
+    input:
+      trigger_time: '12:00:00'
+
+- id: wake-up-light
+  alias: 'slowly turn up lights when the alarm goes off'
+  trigger:
+    platform: template
+    value_template: "{{ (states('sensor.date_time_iso') | as_timestamp | timestamp_local) == (((state_attr('sensor.oneplus8_next_alarm', 'Time in Milliseconds') | int / 1000 )) | timestamp_local) }}"
+  # condition:
+  action:
+    - service: light.turn_on
+      entity_id: light.bedroom_lamp
+      data:
+        brightness: 1
+        color_temp: 454
+    - service: light.turn_on
+      entity_id: light.bedroom_lamp
+      data:
+        transition: 600
+        brightness: 100
+
+
+- id: turn-on-bedroom-light-on-entry
+  alias: "turn on bedroom light when entering the room at night"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_detector
+    to: 'on'
+  condition:
+    - condition: numeric_state
+      entity_id: sensor.motion_lightlevel
+      below: 20
+    - condition: time
+      after: "12:00:00"
+      before: "23:00:00"
+  action:
+    - service: light.turn_on
+      entity_id: light.bedroom_lamp
+
+- id: turn-off-lights-when-leaving
+  alias: 'turn off all lights when nobody is home'
+  trigger:
+    platform: state
+    entity_id: group.suter_strassbergs
+    to: "not_home"
+    for:
+      minutes: 5
+  action:
+    - service: homeassistant.turn_off
+      entity_id: group.all_lights
+
+# Xiaomi Humidifier
+- alias: Air Humidifier target humidity change
+  trigger:
+    entity_id: input_number.xiaomi_humidifier_target_humidity
+    platform: state
+  action:
+    service: xiaomi_miio.fan_set_target_humidity
+    data_template:
+      entity_id: fan.xiaomi_miio_device
+      humidity: '{{ states.input_number.xiaomi_humidifier_target_humidity.state | int }}'
+- alias: Air Humidifier target humidity changed
+  trigger:
+    platform: state
+    entity_id: fan.xiaomi_miio_device
+  action:
+    service: input_number.set_value
+    entity_id: input_number.xiaomi_humidifier_target_humidity
+    data_template:
+      value: '{{ states.fan.xiaomi_miio_device.attributes.target_humidity }}'
+
+- alias: Notify phone when humidifer water is low
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.xiaomi_humidifier_water_remaining
+      below: 15
+  condition:
+    - condition: state
+      entity_id: fan.xiaomi_miio_device
+      state:  'on'
+  action:
+    - service: notify.mobile_app_oneplus8
+      data:
+        message: "Air Humidifer water is at {{ states('sensor.xiaomi_humidifier_water_remaining') }}%"

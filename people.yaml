@@ -1,0 +1,10 @@
+- name: Robin
+  id: robin
+  device_trackers:
+    - device_tracker.oneplus8p
+    - device_tracker.oneplus8
+
+- name: Sophie
+  id: sophie
+  device_trackers:
+    - device_tracker.iphone_sophie

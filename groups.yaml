@@ -1,0 +1,12 @@
+suter_strassbergs:
+  name: Family Members
+  entities:
+    - person.robin
+    - person.sophie
+
+all_lights:
+  name: All lights
+  entities:
+    - light.bedroom_lamp
+    - light.living_room_lamp
+    - switch.balcony_lights

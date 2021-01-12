@@ -1,0 +1,79 @@
+- platform: template
+  sensors:
+    internet_rx_ps:
+      friendly_name: "Internet Download"
+      unit_of_measurement: 'Mb/s'
+      value_template: "{{ state_attr('binary_sensor.edgeos_interface_eth5', 'MBytes/ps (Received)') | round(3) }}"
+      
+    internet_tx_ps:
+      friendly_name: "Internet Upload"
+      unit_of_measurement: 'Mb/s'
+      value_template: "{{ state_attr('binary_sensor.edgeos_interface_eth5', 'MBytes/ps (Sent)') | round(3) }}"
+      
+    desk_power_usage:
+      friendly_name: "Power Usage Desk"
+      unit_of_measurement: 'W'
+      value_template: "{{ state_attr('switch.desk_power', 'current_power_w') }}"
+
+
+# Plants
+
+- platform: miflora
+  name: "flower_sensor_2"
+  mac: "C4:7C:8D:6A:D4:A5"
+  scan_interval: 3600
+  force_update: true
+  median: 3
+  
+- platform: miflora
+  name: "flower_sensor_1"
+  mac: "C4:7C:8D:6A:E6:43"
+  scan_interval: 3600
+  force_update: true
+  median: 3
+  
+- platform: miflora
+  name: "plant_sensor_4"
+  mac: "C4:7C:8D:6A:CE:F5"
+  force_update: true
+  scan_interval: 3600
+  median: 3
+  
+- platform: miflora
+  name: "flower_sensor_3"
+  mac: "C4:7C:8D:6A:CD:68"
+  force_update: true
+  scan_interval: 3600
+  median: 3
+
+- platform: time_date 
+  display_options:
+    - 'date_time_iso'
+  
+  # Xiaomi Humidifier
+- platform: template
+  sensors:
+    xiaomi_humidifier_temp:
+      friendly_name: "Temperature"
+      value_template: "{{ state_attr('fan.xiaomi_miio_device', 'temperature') }}"
+      unit_of_measurement: "°C"
+      device_class: "temperature"
+    xiaomi_humidifier_humidity:
+      friendly_name: "Humidity"
+      value_template: "{{ state_attr('fan.xiaomi_miio_device', 'humidity') }}"
+      unit_of_measurement: "%"
+      device_class: "humidity"
+    xiaomi_humidifier_mode:
+      friendly_name: "Mode"
+      value_template: "{{ state_attr('fan.xiaomi_miio_device', 'speed') }}"
+      icon_template: "mdi:animation-outline"
+    xiaomi_humidifier_speed:
+      friendly_name: "Fan speed"
+      value_template: "{{ state_attr('fan.xiaomi_miio_device', 'motor_speed') }}"
+      unit_of_measurement: "rpm"
+      icon_template: "mdi:speedometer"
+    xiaomi_humidifier_water_remaining:
+      friendly_name: "Water remaining"
+      value_template: "{{ state_attr('fan.xiaomi_miio_device', 'depth') }}"
+      unit_of_measurement: "%"
+      icon_template: "mdi:waves"

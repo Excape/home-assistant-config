@@ -1,0 +1,47 @@
+hallway:
+  sensors:
+    moisture: sensor.flower_sensor_1_moisture
+    battery: sensor.flower_sensor_1_battery
+    temperature: sensor.flower_sensor_1_temperature
+    conductivity: sensor.flower_sensor_1_conductivity
+    brightness: sensor.flower_sensor_1_light_intensity
+  min_moisture: 20
+  max_moisture: 65
+  min_conductivity: 100
+  max_conductivity: 1000
+  
+garden:
+  sensors:
+    moisture: sensor.flower_sensor_2_moisture
+    battery: sensor.flower_sensor_2_battery
+    temperature: sensor.flower_sensor_2_temperature
+    conductivity: sensor.flower_sensor_2_conductivity
+    brightness: sensor.flower_sensor_2_light_intensity
+  min_moisture: 10
+  max_moisture: 60
+  min_conductivity: 0 # 350
+  max_conductivity: 1000
+  
+pothos:
+  sensors:
+    moisture: sensor.plant_sensor_4_moisture
+    battery: sensor.plant_sensor_4_battery
+    temperature: sensor.plant_sensor_4_temperature
+    conductivity: sensor.plant_sensor_4_conductivity
+    brightness: sensor.plant_sensor_4_light_intensity
+  min_moisture: 16
+  max_moisture: 60
+  min_conductivity: 350
+  max_conductivity: 2000
+  
+livingroom_tree:
+  sensors:
+    moisture: sensor.flower_sensor_3_moisture
+    battery: sensor.flower_sensor_3_battery
+    temperature: sensor.flower_sensor_3_temperature
+    conductivity: sensor.flower_sensor_3_conductivity
+    brightness: sensor.flower_sensor_3_light_intensity
+  min_moisture: 16
+  max_moisture: 60
+  min_conductivity: 500
+  max_conductivity: 1300

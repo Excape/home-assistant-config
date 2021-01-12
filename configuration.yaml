@@ -1,0 +1,115 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+
+# Text to speech
+tts:
+  - platform: google_translate
+ 
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+sensor: !include sensors.yaml
+camera: !include camera.yaml
+plant: !include plants.yaml
+person: !include people.yaml
+
+wake_on_lan:
+
+switch:
+  - platform: template
+    switches:
+      pi_hole_switch:
+        friendly_name: "Pi-hole Enabled"
+        value_template: "{{ is_state('binary_sensor.pi_hole', 'on') }}"
+        turn_off:
+          service: pi_hole.disable
+          data:
+            entity_id: switch.pi_hole
+            duration: '00:05:00'
+        turn_on:
+          
+  - platform: mystrom
+    host: 192.168.1.11
+    name: desk power
+
+    
+fan:
+  - platform: xiaomi_miio
+    host: 192.168.1.230
+    token: !secret xiaomi_token
+    name: "Xiaomi Air Humidifier"
+
+media_player:
+  - platform: philips_android_tv
+    name: TV
+    host: 192.168.1.212
+    mac: "70:AF:24:19:8C:0C"
+    username: !secret android_tv_username
+    password: !secret android_tv_password
+
+google_assistant:
+  project_id: home-assistant-252118
+  service_account: !include google-service-account-auth.json
+  report_state: true
+  exposed_domains:
+    - switch
+    - light
+    - sensor
+    - fan
+
+input_select:
+  # Xiaomi Humidifier
+  xiaomi_humidifier_mode:
+    name: Mode
+    options:
+      - Auto
+      - Silent
+      - Medium
+      - High
+    icon: "mdi:animation-outline"
+
+input_number:
+  # Xiaomi Humidifier
+  xiaomi_humidifier_target_humidity:
+    name: "Target Humidity"
+    unit_of_measurement: '%'
+    initial: 40
+    min: 30
+    max: 80
+    step: 10
+    icon: "mdi:weather-windy"
+
+homekit:
+  filter:
+    include_domains:
+      - light
+      - switch
+      - fan
+
+notify:
+  - platform: html5
+    name: google_cloud
+    vapid_pub_key: !secret google_cloud_pub_key
+    vapid_prv_key: !secret google_cloud_priv_key
+    vapid_email: effectssuter@gmail.com
+
+pi_hole:
+  - host: 'pi.hole'
+    api_key: !secret pihole_apikey
+  
+spotify:
+  client_id: !secret spotify_client_id
+  client_secret: !secret spotify_client_secret
+
+device_tracker:
+  - platform: ping
+    hosts:
+      oneplus8p: 192.168.1.245
+      iphone_sophie: 192.168.1.249
+      
+http:
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
